@@ -1,4 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib import messages
+
 from .forms import SignupForm
 
 # Create your views here.
@@ -8,6 +11,26 @@ def signin(request):
 
 def signup(request):
     if request.method == 'POST':
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        password_c = request.POST['password_c']
+        if password == password_c:
+            user = User.objects.create_user(
+                first_name=first_name,
+                last_name=last_name,
+                username=username,
+                email=email, 
+                password=password
+            )
+            # redirect to another page (home, but logged in)
+            print("*************************", user)
+            messages.success(request, "You have been successfully registered!")
+        else:
+            messages.error(request, "The password entered do not match")
+            print("--------------------------------")
         # Get your values and clean the post request here
         pass
 
