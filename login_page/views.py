@@ -10,6 +10,9 @@ def signin(request):
     return render(request, 'signin.html')
 
 def signup(request):
+    context = {}
+    context['form'] = SignupForm
+
     if request.method == 'POST':
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
@@ -27,15 +30,13 @@ def signup(request):
             )
             # redirect to another page (home, but logged in)
             print("*************************", user)
-            messages.success(request, "You have been successfully registered!")
+            context["message"] = "User created successfully!"
         else:
-            messages.error(request, "The password entered do not match")
+            context["message"] = "Your passwords do not match"
             print("--------------------------------")
         # Get your values and clean the post request here
         pass
 
-    context = {}
-    context['form'] = SignupForm
     return render(request, 'signup.html', context)
 
 def home(request):

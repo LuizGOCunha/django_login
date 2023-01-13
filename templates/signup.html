@@ -10,5 +10,10 @@
         {{ form.as_p }}
         <input type="submit" value="Done">
     </form>
+    {% if message %}
+      <script>
+        alert('{{message}}')
+      </script>
+    {% endif %}
   </body>
 </html>
