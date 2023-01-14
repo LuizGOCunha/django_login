@@ -43,11 +43,10 @@ def signup(request):
                 password=password
             )
             # redirect to another page (home, but logged in)
-            print("*************************", user)
             context["message"] = "User created successfully!"
+            return redirect("/signin/")
         else:
             context["message"] = "Your passwords do not match"
-            print("--------------------------------")
         # Get your values and clean the post request here
         pass
 
