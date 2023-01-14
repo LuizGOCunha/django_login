@@ -4,7 +4,16 @@
     <title>Sign In</title>
   </head>
   <body>
-    <h1>Welcome to My Website</h1>
-    <p>This is the home page of my website.</p>
+    
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Done">
+    </form>
+    {% if message %}
+    <script>
+      alert('{{message}}')
+    </script>
+    {% endif %}
   </body>
 </html>

@@ -1,13 +1,27 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 
-from .forms import SignupForm
+from .forms import SignupForm, SigninForm
 
 # Create your views here.
 
 def signin(request):
-    return render(request, 'signin.html')
+    context = {}
+    context['form'] = SigninForm
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            context['autenticated'] = request.user
+            return redirect('/')
+        else:
+            context['message'] = "Invalid Credentials"
+        
+    return render(request, 'signin.html', context)
 
 def signup(request):
     context = {}
@@ -40,8 +54,13 @@ def signup(request):
     return render(request, 'signup.html', context)
 
 def home(request):
-    return render(request, 'home.html')
+    context = {}
+    if request.user.is_authenticated:
+        context['autenticated'] = request.user
+
+    return render(request, 'home.html', context)
 
 def signout(request):
-    pass
+    logout(request)
+    return redirect('/')
 
