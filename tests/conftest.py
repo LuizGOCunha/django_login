@@ -29,6 +29,13 @@ These are some of the most common options, but there are many more
 that can be used to customize the behavior of the test runner.
 """
 import pytest
+from django.contrib.auth.models import User
+
+# Scopes available for fixture:
+# "function" - Run once per function
+# "class" - Run once per class of tests
+# "module" - Run once per module of tests
+# "session" - Runs once in the whole session
 
 @pytest.fixture(scope="session")
 def fixture_ex():
@@ -39,4 +46,9 @@ def fixture_ex():
     print("*******************")
     var = 1
     yield var
-    
+
+@pytest.fixture(scope='function')
+# the 'db' fixture can be passed when creating a fixture, so we can create a database with it
+def return_test_user(db):
+    user = User.objects.create_user('usernametest','test@test.com', 'passwordtest')
+    return user
